@@ -41,6 +41,8 @@ docker run -it --rm -d \
 -e PGDATABASE=mydb \
 docker-gs-ping-roach
 
+4. Test
+
 curl localhost
 //docker container rm --force rest-server
 
@@ -56,7 +58,31 @@ curl -X POST \
 --data '{"value": "Hello, Second message!"}' \
 http://localhost/send
 
+5. Cleanup
+docker container stop rest-server roach
+docker container rm rest-server roach
 
+6. Restart and check that data is retained
+   docker run -d \
+   --name roach \
+   --hostname db \
+   --network mynet \
+   -p 26257:26257 \
+   -p 8080:8080 \
+   -v roach:/cockroach/cockroach-data \
+   cockroachdb/cockroach:latest-v20.1 start-single-node \
+   --insecure
+
+docker run -it --rm -d \
+--network mynet \
+--name rest-server \
+-p 80:8080 \
+-e PGUSER=totoro \
+-e PGPASSWORD=myfriend \
+-e PGHOST=db \
+-e PGPORT=26257 \
+-e PGDATABASE=mydb \
+docker-gs-ping-roach
 
 A slightly more advanced Go server/microservice example for [Docker's Go Language Guide](https://docs.docker.com/language/golang/). 
 
