@@ -1,5 +1,18 @@
 # docker-gs-ping-roach
 
+// Start with dockre compose:
+docker-compose up --build
+
+// Validate config
+docker-compose config
+
+// Start in detached mode
+docker-compose up --build -d
+docker-compose down
+
+
+==================
+or 
 
 3. Run with database (cockroachdb)
    docker volume create roach
